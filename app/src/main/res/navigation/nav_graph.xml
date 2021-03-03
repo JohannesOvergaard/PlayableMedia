@@ -3,26 +3,40 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/FirstFragment">
+    app:startDestination="@id/StartFragment">
+
 
     <fragment
-        android:id="@+id/FirstFragment"
-        android:name="com.example.skraldemonstre.FirstFragment"
-        android:label="@string/first_fragment_label"
-        tools:layout="@layout/fragment_first">
-
+        android:id="@+id/StartFragment"
+        android:name="com.example.skraldemonstre.StartFragment"
+        android:label="@string/start_fragment_label"
+        tools:layout="@layout/fragment_start_screen">
+        <!--Start -> Fang Monstre -->
         <action
-            android:id="@+id/action_FirstFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
+            android:id="@+id/action_StartFragment_to_FangMonstreFragment"
+            app:destination="@id/FangMonstreFragment" />
+        <!--Start -> Galleri -->
+        <action
+            android:id="@+id/action_StartFragment_to_GalleriFragment"
+            app:destination="@id/galleriFragment" />
     </fragment>
     <fragment
-        android:id="@+id/SecondFragment"
-        android:name="com.example.skraldemonstre.SecondFragment"
-        android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_second">
-
+        android:id="@+id/FangMonstreFragment"
+        android:name="com.example.skraldemonstre.FangMonstreFragment"
+        android:label="@string/fang_monstre_fragment_label"
+        tools:layout="@layout/fragment_fang_monstre">
+        <!--Fang Monstre -> Start -->
         <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
+            android:id="@+id/action_FangMonstreFragment_to_StartFragment"
+            app:destination="@id/StartFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/galleriFragment"
+        android:name="com.example.skraldemonstre.GalleriFragment"
+        android:label="@string/galleri_fragment_label" >
+        <!--Galleri -> Start-->
+        <action
+            android:id="@+id/action_GalleriFragment_to_StartFragment"
+            app:destination="@id/StartFragment" />
     </fragment>
 </navigation>
