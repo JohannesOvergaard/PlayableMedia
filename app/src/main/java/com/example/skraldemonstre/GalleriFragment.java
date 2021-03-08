@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -16,8 +17,11 @@ public class GalleriFragment extends Fragment {
             LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState
     ) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_galleri, container, false);
+        View frag = inflater.inflate(R.layout.fragment_galleri, container, false);
+
+        GridView gridview = (GridView) frag.findViewById(R.id.medal_grid);
+        gridview.setAdapter(new MedalAdapter(this.getContext()));
+        return frag;
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
@@ -30,5 +34,7 @@ public class GalleriFragment extends Fragment {
                         .navigate(R.id.action_GalleriFragment_to_StartFragment);
             }
         });
+
+
     }
 }
