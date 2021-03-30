@@ -12,9 +12,9 @@ import android.widget.Toast;
 
 public class MedalAdapter extends BaseAdapter
 {
-    private Context mContext;
+    private final Context mContext;
     private int btn_id;
-    private int total_btns = 5;
+    private final int total_btns = 5;
 
     public MedalAdapter(Context context) {
         this.mContext = context;

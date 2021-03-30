@@ -1,30 +1,26 @@
 package com.example.skraldemonstre;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.ActivityNotFoundException;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.Camera;
-import android.hardware.camera2.CameraAccessException;
-import android.hardware.camera2.CameraCharacteristics;
-import android.hardware.camera2.CameraDevice;
-import android.hardware.camera2.CameraManager;
-import android.os.Build;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
+import android.graphics.RectF;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.SparseIntArray;
 import android.view.LayoutInflater;
-import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -38,8 +34,13 @@ import com.google.mlkit.vision.label.ImageLabel;
 import com.google.mlkit.vision.label.ImageLabeler;
 import com.google.mlkit.vision.label.ImageLabeling;
 import com.google.mlkit.vision.label.custom.CustomImageLabelerOptions;
+import com.google.mlkit.vision.objects.DetectedObject;
+import com.google.mlkit.vision.objects.ObjectDetection;
+import com.google.mlkit.vision.objects.ObjectDetector;
+import com.google.mlkit.vision.objects.defaults.ObjectDetectorOptions;
 
 import java.util.List;
+
 
 import static android.app.Activity.RESULT_OK;
 import static android.content.Context.CAMERA_SERVICE;
@@ -49,6 +50,8 @@ public class FangMonstreFragment extends Fragment {
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int CAMERA_PERMISSION_CODE = 100;
     private ImageView trash_image;
+    private Bitmap _rawImage;
+    private GraphicOverlay overlay;
     private TextView trash_text;
 
     @Override
@@ -76,12 +79,15 @@ public class FangMonstreFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 //triggers camera functionality
+                overlay.clear();
+                trash_image.setImageBitmap(null);
                 checkPermission(Manifest.permission.CAMERA, CAMERA_PERMISSION_CODE);
             }
 
         });
 
         trash_image = view.findViewById(R.id.trash_image);
+        overlay = view.findViewById(R.id.graphic_overlay);
         trash_text = view.findViewById(R.id.trash_fact);
 
     }
@@ -121,6 +127,8 @@ public class FangMonstreFragment extends Fragment {
             Bitmap image = (Bitmap) extras.get("data");
             trash_image.setImageBitmap(image);
             processImage(image);
+            detectItem(image);
+            _rawImage = image;
         }
     }
 
@@ -138,23 +146,29 @@ public class FangMonstreFragment extends Fragment {
         return ImageLabeling.getClient(options);
     }
 
+    public ObjectDetectionCustomProcessor setupObjectDetection() {
+        ObjectDetectorOptions options = new ObjectDetectorOptions.Builder()
+                .setDetectorMode(ObjectDetectorOptions.SINGLE_IMAGE_MODE)
+                .build();
+
+        return new ObjectDetectionCustomProcessor(this.getContext(), options);
+    }
 
     public void processImage(Bitmap image) {
-
-        /*int rotation = 0;
-        try {
-            rotation = getRotation(getActivity(), getContext());
-        } catch (CameraAccessException a) {
-            //TODO: Do something
-        }*/
 
         InputImage inputImage = InputImage.fromBitmap(image, 0);
 
         ImageLabeler labeler = setupImageLabelling();
+
+        //Label image
         labeler.process(inputImage)
                 .addOnSuccessListener(new OnSuccessListener<List<ImageLabel>>() {
                     @Override
                     public void onSuccess(List<ImageLabel> imageLabels) {
+                        //Items recognized
+                        if (imageLabels.size() == 0) {
+                            trash_text.append("Det ved jeg ikke hvad er."); //TODO: bedre tekst?
+                        }
                         for (ImageLabel l : imageLabels) {
                             trash_text.append(l.getText() + " : " + l.getConfidence());
                         }
@@ -162,50 +176,31 @@ public class FangMonstreFragment extends Fragment {
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        //TODO: handle failure
+                        //Items not recognized
+                        trash_text.append("Det ved jeg ikke hvad er.");
                     }
                 });
     }
 
-    private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
-        static {
-            ORIENTATIONS.append(Surface.ROTATION_0, 90);
-            ORIENTATIONS.append(Surface.ROTATION_90, 0);
-            ORIENTATIONS.append(Surface.ROTATION_180, 270);
-            ORIENTATIONS.append(Surface.ROTATION_270, 180);
-        }
+    public void detectItem(Bitmap image) {
+        InputImage inputImage = InputImage.fromBitmap(image, 0);
+        ObjectDetectionCustomProcessor detector = setupObjectDetection();
 
-    /*    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    private int getRotation(Activity activity, Context context) throws CameraAccessException {
-         //Get angle for image rotation based on device's current rotation
-            int devicerotation = activity.getWindowManager().getDefaultDisplay().getRotation();
-            int rotationCompensation = ORIENTATIONS.get(devicerotation);
+        overlay.clear();
 
-            CameraManager cameraManager = (CameraManager) context.getSystemService(CAMERA_SERVICE);
-            String[] ids = cameraManager.getCameraIdList();
-            String cameraId = ids[0]; //assuming first camera is being used?
-            int sensorOrientation = cameraManager
-                    .getCameraCharacteristics(cameraId)
-                    .get(CameraCharacteristics.SENSOR_ORIENTATION);
-            rotationCompensation = (rotationCompensation + sensorOrientation + 270) % 360;
+        float scale = Math.max((float) image.getWidth() / (float) trash_image.getWidth(),
+                (float) image.getHeight() / (float) trash_image.getHeight());
 
-            int result;
-            switch (rotationCompensation) {
-                case 0:
-                    result = Surface.ROTATION_0;
-                    break;
-                case 90:
-                    result = Surface.ROTATION_90;
-                    break;
-                case 180:
-                    result = Surface.ROTATION_180;
-                    break;
-                case 270:
-                    result = Surface.ROTATION_270;
-                    break;
-                default:
-                    result = Surface.ROTATION_0;
-            }
-            return result;
-    }*/
+        Bitmap resizedBitmap = Bitmap.createScaledBitmap(image, (int) (image.getWidth() / scale), (int) (image.getHeight() / scale), true);
+
+        trash_image.setImageBitmap(resizedBitmap);
+
+        //TODO: tag en beslutning - skal den prøve at sætte ansigt på selvom den ikke genkender typen af skrald?
+        overlay.setImageSourceInfo(
+                resizedBitmap.getWidth(), resizedBitmap.getHeight(), false);
+
+        detector.processBitmap(resizedBitmap, overlay);
+
+    }
+
 }

@@ -18,6 +18,6 @@ public class Enums {
         MASK_GOLD,
         MASK_SILVER,
         MASK_BRONZE
-    };
+    }
 
 }
