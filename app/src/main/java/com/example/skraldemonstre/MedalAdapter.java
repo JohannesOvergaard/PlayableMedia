@@ -1,5 +1,6 @@
 package com.example.skraldemonstre;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
@@ -14,7 +15,7 @@ public class MedalAdapter extends BaseAdapter
 {
     private final Context mContext;
     private int btn_id;
-    private final int total_btns = 5;
+    private final int total_btns = 4;
 
     public MedalAdapter(Context context) {
         this.mContext = context;
@@ -61,14 +62,15 @@ public class MedalAdapter extends BaseAdapter
         ImageButton imageButton;
         if (view == null) {
             imageButton = new ImageButton(mContext);
-            imageButton.setLayoutParams(new GridView.LayoutParams(250, 250));
-            imageButton.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            imageButton.setPadding(8,8,8,8);
+            imageButton.setLayoutParams(new GridView.LayoutParams(300, 350));
+            imageButton.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+            imageButton.setPadding(0,0,0,0);
+            imageButton.setBackgroundColor(Color.WHITE);
         } else {
             imageButton = (ImageButton) view;
         }
 
-        imageButton.setImageResource(mMedalIds[0]);
+        imageButton.setImageResource(mMedalIds[i]);
 
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,6 +82,9 @@ public class MedalAdapter extends BaseAdapter
     }
 
     public Integer[] mMedalIds = {
-            R.mipmap.bottle_gold
+            R.drawable.greybottlemonster,
+            R.drawable.greycanmonster,
+            R.drawable.greycigarettemonster,
+            R.drawable.greymaskmonster
     };
 }

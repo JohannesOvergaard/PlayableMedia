@@ -1,12 +1,13 @@
 <resources>
-    <string name="app_name">SkraldeMonstre</string>
+    <string name="app_name">Monster skrald</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
     <string name="start_fragment_label">Start Fragment</string>
     <string name="fang_monstre_fragment_label">Fang Monstre Fragment</string>
     <string name="galleri_fragment_label">Galleri Fragment</string>
-    <string name="fang_monstre">Fang Monstre</string>
-    <string name="galleri">Galleri</string>
+    <string name="fang_monstre">Start jagt</string>
+    <string name="galleri">Medaljer</string>
     <string name="back">Tilbage</string>
+    <string name="app_explanation">Skralde monstrene er sluppet løs i din by. Fang dem ved at tage et billede af dem!</string>
 
 </resources>
