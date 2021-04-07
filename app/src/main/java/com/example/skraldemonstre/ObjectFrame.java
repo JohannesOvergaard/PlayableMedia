@@ -8,6 +8,9 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 
 import com.google.mlkit.vision.objects.DetectedObject;
+
+import java.util.Random;
+
 //Class adapted from: https://github.com/googlesamples/mlkit/blob/master/android/vision-quickstart/app/src/main/java/com/google/mlkit/vision/demo/java/objectdetector/ObjectGraphic.java
 public class ObjectFrame extends GraphicOverlay.Graphic {
     private final DetectedObject object;
@@ -44,9 +47,33 @@ public class ObjectFrame extends GraphicOverlay.Graphic {
         canvas.drawRect(rect, paint);
         */
 
+        Random random = new Random();
+
         Resources res = getApplicationContext().getResources();
         canvas.drawBitmap(BitmapFactory.decodeResource(res,
-                R.drawable.eyes1),null,topRect,null);
-        canvas.drawBitmap(BitmapFactory.decodeResource(res,R.drawable.mouth1),null,bottomRect,null);
+                mEyesIds[random.nextInt(mEyesIds.length)]),null,topRect,null);
+        canvas.drawBitmap(BitmapFactory.decodeResource(res,
+                mMouthIds[random.nextInt(mMouthIds.length)]),null,bottomRect,null);
     }
+
+    public Integer[] mEyesIds = {
+            R.drawable.eyes1,
+            R.drawable.eyes2,
+            R.drawable.eyes3,
+            R.drawable.eyes4,
+            R.drawable.eyes5,
+            R.drawable.eyes6
+    };
+
+    public Integer[] mMouthIds = {
+            R.drawable.mouth1,
+            R.drawable.mouth2,
+            R.drawable.mouth3,
+            R.drawable.mouth4,
+            R.drawable.mouth5,
+            R.drawable.mouth6,
+            R.drawable.mouth7,
+            R.drawable.mouth8,
+            R.drawable.mouth9
+    };
 }
