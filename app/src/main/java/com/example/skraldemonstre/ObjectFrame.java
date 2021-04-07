@@ -1,5 +1,7 @@
 package com.example.skraldemonstre;
 
+import android.content.res.Resources;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -17,19 +19,34 @@ public class ObjectFrame extends GraphicOverlay.Graphic {
 
     @Override
     public void draw(Canvas canvas) {
-        RectF rect = new RectF(object.getBoundingBox());
-        float x0 = translateX(rect.left);
-        float x1 = translateY(rect.right);
-        rect.left = Math.min(x0, x1);
-        rect.right = Math.max(x0, x1);
-        rect.top = translateY(rect.top);
-        rect.bottom = translateY(rect.bottom);
+        RectF topRect = new RectF(object.getBoundingBox());
+        float x0 = translateX(topRect.left);
+        float x1 = translateY(topRect.right);
+        topRect.left = Math.min(x0, x1);
+        topRect.right = Math.max(x0, x1);
+        topRect.top = translateY(topRect.top);
+        topRect.bottom = translateY(topRect.top+((topRect.bottom-topRect.top)/2)); //Top half of rect
 
+        RectF bottomRect = new RectF(object.getBoundingBox());
+        float x2 = translateX(bottomRect.left);
+        float x3 = translateY(bottomRect.right);
+        bottomRect.left = Math.min(x2, x3);
+        bottomRect.right = Math.max(x2, x3);
+        bottomRect.top = translateY(bottomRect.top+((topRect.bottom-topRect.top)/2)); //bottom half of rect
+        bottomRect.bottom = translateY(bottomRect.bottom);
+
+        /*
         Paint paint = new Paint();
         paint.setColor(Color.GREEN);
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(4.0f);
 
         canvas.drawRect(rect, paint);
+        */
+
+        Resources res = getApplicationContext().getResources();
+        canvas.drawBitmap(BitmapFactory.decodeResource(res,
+                R.drawable.eyes1),null,topRect,null);
+        canvas.drawBitmap(BitmapFactory.decodeResource(res,R.drawable.mouth1),null,bottomRect,null);
     }
 }
