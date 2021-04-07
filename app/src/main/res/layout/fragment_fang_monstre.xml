@@ -28,15 +28,33 @@
         app:layout_constraintTop_toTopOf="@id/trash_image"
         app:layout_constraintBottom_toBottomOf="@id/trash_image"/>
 
+    <ImageView
+        android:id="@+id/image_glove"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:scaleType="fitEnd"
+        android:src="@drawable/gloves"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
     <TextView
         android:id="@+id/trash_fact"
-        android:layout_width="263dp"
-        android:layout_height="92dp"
-        android:layout_marginStart="72dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/safty_alert"
+        android:gravity="center"
+        android:fontFamily="@font/chewy"
+        android:textSize="22dp"
+        android:padding="35dp"
+        android:background="@drawable/sticker"
+        android:textColor="@color/white"
+        android:textAlignment="center"
+        android:layout_margin="40dp"
         app:layout_constraintBottom_toTopOf="@id/button_capture"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/trash_image"
-        app:layout_constraintVertical_bias="0.614" />
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <ImageButton
         android:id="@+id/button_capture"
@@ -47,11 +65,11 @@
         android:elevation="5dp"
         android:src="@drawable/ic_baseline_add_a_photo_24"
         android:background="@drawable/rounded_corners"
-        app:layout_constraintBottom_toTopOf="@id/button_back"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <Button
+    <!--Button
         android:id="@+id/button_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -60,5 +78,5 @@
         android:text="@string/back"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"/-->
 </androidx.constraintlayout.widget.ConstraintLayout>

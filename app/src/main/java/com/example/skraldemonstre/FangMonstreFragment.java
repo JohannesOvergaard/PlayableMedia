@@ -53,6 +53,7 @@ public class FangMonstreFragment extends Fragment {
     private Bitmap _rawImage;
     private GraphicOverlay overlay;
     private TextView trash_text;
+    private ImageView gloves;
 
     @Override
     public View onCreateView(
@@ -66,7 +67,7 @@ public class FangMonstreFragment extends Fragment {
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+/*
         view.findViewById(R.id.button_back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -74,7 +75,7 @@ public class FangMonstreFragment extends Fragment {
                         .navigate(R.id.action_FangMonstreFragment_to_StartFragment);
             }
         });
-
+*/      gloves = view.findViewById(R.id.image_glove);
         view.findViewById(R.id.button_capture).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -82,6 +83,8 @@ public class FangMonstreFragment extends Fragment {
                 overlay.clear();
                 trash_image.setImageBitmap(null);
                 checkPermission(Manifest.permission.CAMERA, CAMERA_PERMISSION_CODE);
+
+                gloves.setVisibility(View.GONE);
             }
 
         });
@@ -167,17 +170,17 @@ public class FangMonstreFragment extends Fragment {
                     public void onSuccess(List<ImageLabel> imageLabels) {
                         //Items recognized
                         if (imageLabels.size() == 0) {
-                            trash_text.append("Det ved jeg ikke hvad er."); //TODO: bedre tekst?
+                            trash_text.setText("Det ved jeg ikke hvad er."); //TODO: bedre tekst?
                         }
                         for (ImageLabel l : imageLabels) {
-                            trash_text.append(l.getText() + " : " + l.getConfidence());
+                            trash_text.setText(l.getText() + " : " + l.getConfidence());
                         }
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         //Items not recognized
-                        trash_text.append("Det ved jeg ikke hvad er.");
+                        trash_text.setText("Det ved jeg ikke hvad er.");
                     }
                 });
     }

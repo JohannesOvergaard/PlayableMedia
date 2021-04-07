@@ -26,7 +26,7 @@ public class GalleriFragment extends Fragment {
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+/*
         view.findViewById(R.id.button_galleri_back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -34,7 +34,7 @@ public class GalleriFragment extends Fragment {
                         .navigate(R.id.action_GalleriFragment_to_StartFragment);
             }
         });
-
+*/
 
     }
 }
