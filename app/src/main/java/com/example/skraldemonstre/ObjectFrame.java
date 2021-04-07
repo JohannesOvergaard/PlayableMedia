@@ -32,7 +32,7 @@ public class ObjectFrame extends GraphicOverlay.Graphic {
         float x3 = translateY(bottomRect.right);
         bottomRect.left = Math.min(x2, x3);
         bottomRect.right = Math.max(x2, x3);
-        bottomRect.top = translateY(bottomRect.top+((topRect.bottom-topRect.top)/2)); //bottom half of rect
+        bottomRect.top = translateY(bottomRect.bottom-((topRect.bottom-topRect.top)/2)); //bottom half of rect
         bottomRect.bottom = translateY(bottomRect.bottom);
 
         /*
