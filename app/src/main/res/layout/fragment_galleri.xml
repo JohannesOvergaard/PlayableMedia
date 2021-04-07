@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/chewy"
         android:text="@string/galleri"
-        android:textColor="@color/grey"
+        android:textColor="@color/orange"
         android:textSize="36sp"
         android:layout_margin="50dp"
         app:layout_constraintEnd_toEndOf="parent"
