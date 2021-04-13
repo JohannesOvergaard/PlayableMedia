@@ -75,7 +75,7 @@ public class FangMonstreFragment extends Fragment {
                         .navigate(R.id.action_FangMonstreFragment_to_StartFragment);
             }
         });
-*/      gloves = view.findViewById(R.id.image_glove);
+*/
         view.findViewById(R.id.button_capture).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -83,8 +83,6 @@ public class FangMonstreFragment extends Fragment {
                 overlay.clear();
                 trash_image.setImageBitmap(null);
                 checkPermission(Manifest.permission.CAMERA, CAMERA_PERMISSION_CODE);
-
-                gloves.setVisibility(View.GONE);
             }
 
         });
@@ -92,6 +90,7 @@ public class FangMonstreFragment extends Fragment {
         trash_image = view.findViewById(R.id.trash_image);
         overlay = view.findViewById(R.id.graphic_overlay);
         trash_text = view.findViewById(R.id.trash_fact);
+        gloves = view.findViewById(R.id.image_glove);
 
     }
 
@@ -134,8 +133,6 @@ public class FangMonstreFragment extends Fragment {
             _rawImage = image;
         }
     }
-
-
 
     public ImageLabeler setupImageLabelling() {
         LocalModel localModel = new LocalModel.Builder()
@@ -183,6 +180,8 @@ public class FangMonstreFragment extends Fragment {
                         trash_text.setText("Det ved jeg ikke hvad er.");
                     }
                 });
+
+        gloves.setVisibility(View.GONE);
     }
 
     public void detectItem(Bitmap image) {
