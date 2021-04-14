@@ -12,24 +12,24 @@ import android.widget.Toast;
 public class MedalAdapter extends BaseAdapter
 {
     private final Context mContext;
-    int[] monstervalues;
+    int[] monsterValues;
     int bronze = 1;
     int silver = 3;
     int gold = 5;
 
     public MedalAdapter(Context context, int[] values) {
         this.mContext = context;
-        this.monstervalues = values;
+        this.monsterValues = values;
     }
 
     @Override
     public int getCount() {
-        return monstervalues.length;
+        return monsterValues.length;
     }
 
     @Override
     public Object getItem(int i) {
-        return monstervalues[i];
+        return monsterValues[i];
     }
 
     @Override
@@ -39,7 +39,7 @@ public class MedalAdapter extends BaseAdapter
 
     public int getMonsterMedal(int monstertype) {
         int j;
-        int earned = monstervalues[monstertype];
+        int earned = monsterValues[monstertype];
         if (earned >= gold) {j = 3; }
         else if (earned >= silver) {j = 2;}
         else if (earned >= bronze) {j = 1; }
@@ -58,7 +58,7 @@ public class MedalAdapter extends BaseAdapter
     }
 
     public int getMedalProgress(int monstertype) {
-        int earned = monstervalues[monstertype];
+        int earned = monsterValues[monstertype];
         int progress;
         if (earned >= gold) {progress = 100;}
         else if (earned >= silver) {progress = (int) (((double) earned / (double) gold) * 100);}
@@ -82,7 +82,7 @@ public class MedalAdapter extends BaseAdapter
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(v.getContext(), "Du har fanget " + monstervalues[position] + " " + monsterTypes[position], Toast.LENGTH_SHORT).show();
+                Toast.makeText(v.getContext(), "Du har fanget " + monsterValues[position] + " " + monsterTypes[position], Toast.LENGTH_SHORT).show();
             }
         });
         progressBar.setProgress(getMedalProgress(position));
@@ -124,6 +124,4 @@ public class MedalAdapter extends BaseAdapter
             "maskemonstre",
             "flaskemonstre"
     };
-
-
 }

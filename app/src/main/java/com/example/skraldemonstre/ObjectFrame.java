@@ -3,12 +3,8 @@ package com.example.skraldemonstre;
 import android.content.res.Resources;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.RectF;
-
 import com.google.mlkit.vision.objects.DetectedObject;
-
 import java.util.Random;
 
 //Class adapted from: https://github.com/googlesamples/mlkit/blob/master/android/vision-quickstart/app/src/main/java/com/google/mlkit/vision/demo/java/objectdetector/ObjectGraphic.java
@@ -37,15 +33,6 @@ public class ObjectFrame extends GraphicOverlay.Graphic {
         bottomRect.right = Math.max(x2, x3);
         bottomRect.top = translateY(bottomRect.bottom-((topRect.bottom-topRect.top)/2)); //bottom half of rect
         bottomRect.bottom = translateY(bottomRect.bottom);
-
-        /*
-        Paint paint = new Paint();
-        paint.setColor(Color.GREEN);
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(4.0f);
-
-        canvas.drawRect(rect, paint);
-        */
 
         Random random = new Random();
 

@@ -5,9 +5,6 @@ import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.util.AttributeSet;
 import android.view.View;
-
-import androidx.core.util.Preconditions;
-
 import java.util.ArrayList;
 import java.util.List;
 

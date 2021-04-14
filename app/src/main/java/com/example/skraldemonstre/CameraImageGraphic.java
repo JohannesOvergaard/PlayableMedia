@@ -1,7 +1,6 @@
 package com.example.skraldemonstre;
 
 import android.graphics.Bitmap;
-import android.graphics.Camera;
 import android.graphics.Canvas;
 
 //Code in this class borrowed from here: https://github.com/googlesamples/mlkit/blob/master/android/vision-quickstart/app/src/main/java/com/google/mlkit/vision/demo/CameraImageGraphic.java
