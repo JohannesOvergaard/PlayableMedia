@@ -1,54 +1,44 @@
 package com.example.skraldemonstre;
 import android.content.Context;
-import android.graphics.Color;
-import android.provider.ContactsContract;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 public class MedalAdapter extends BaseAdapter
 {
     private final Context mContext;
-    private final int total_btns = 4;
     int[] monstervalues;
-    DataTransfer df;
     int bronze = 1;
     int silver = 3;
     int gold = 5;
 
-    public MedalAdapter(Context context, DataTransfer df) {
+    public MedalAdapter(Context context, int[] values) {
         this.mContext = context;
-        this.df = df;
-        findMonsters();
-    }
-
-    public void findMonsters() {
-        monstervalues = df.SendData();
+        this.monstervalues = values;
     }
 
     @Override
     public int getCount() {
-        return total_btns;
+        return monstervalues.length;
     }
 
     @Override
     public Object getItem(int i) {
-        return null;
+        return monstervalues[i];
     }
 
     @Override
     public long getItemId(int i) {
-        return 0;
+        return i;
     }
 
-    public int getMonsterCount(int monstertype) {
-        int j = 0;
+    public int getMonsterMedal(int monstertype) {
+        int j;
         int earned = monstervalues[monstertype];
         if (earned >= gold) {j = 3; }
         else if (earned >= silver) {j = 2;}
@@ -67,32 +57,38 @@ public class MedalAdapter extends BaseAdapter
         return 0;
     }
 
+    public int getMedalProgress(int monstertype) {
+        int earned = monstervalues[monstertype];
+        int progress;
+        if (earned >= gold) {progress = 100;}
+        else if (earned >= silver) {progress = (int) (((double) earned / (double) gold) * 100);}
+        else if (earned >= bronze) {progress = (int) (((double) earned / (double) silver) * 100); }
+        else {progress = (int) (((double) earned / (double) bronze) * 100);}
+        return progress+1;
+    }
+
     @Override
-    public View getView(final int i, View view, ViewGroup viewGroup)
+    public View getView(int position, View convertView, ViewGroup viewGroup)
     {
-        ImageButton imageButton;
-        if (view == null) {
-            imageButton = new ImageButton(mContext);
-            imageButton.setLayoutParams(new GridView.LayoutParams(300, 350));
-            imageButton.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-            imageButton.setPadding(0,0,0,0);
-            imageButton.setBackgroundColor(Color.WHITE);
-        } else {
-            imageButton = (ImageButton) view;
+        if (convertView == null) {
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.medal_view,viewGroup,false);
         }
 
-        imageButton.setImageResource(getMonsterCount(i));
+        final ImageButton imageButton = (ImageButton) convertView.findViewById(R.id.image_medal);
+        final ProgressBar progressBar = (ProgressBar) convertView.findViewById(R.id.progress);
 
+        imageButton.setImageResource(getMonsterMedal(position));
+        imageButton.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(v.getContext(), "Du har fanget " + monstervalues[i] + " " + monsterTypes[i], Toast.LENGTH_SHORT).show();
+                Toast.makeText(v.getContext(), "Du har fanget " + monstervalues[position] + " " + monsterTypes[position], Toast.LENGTH_SHORT).show();
             }
         });
-        return imageButton;
+        progressBar.setProgress(getMedalProgress(position));
+
+        return convertView;
     }
-
-
 
     public Integer[] bottleMonsterMedals = {
             R.drawable.greybottlemonster,
@@ -123,12 +119,11 @@ public class MedalAdapter extends BaseAdapter
     };
 
     public String[] monsterTypes = {
-        "dåsemonstre",
-        "cigaretmonstre",
-        "maskemonstre",
-        "flaskemonstre"
+            "dåsemonstre",
+            "cigaretmonstre",
+            "maskemonstre",
+            "flaskemonstre"
     };
 
 
 }
-

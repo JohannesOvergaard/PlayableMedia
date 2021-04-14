@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
-public class GalleriFragment extends Fragment implements DataTransfer {
+public class GalleriFragment extends Fragment {
 
     private int cans, cigarettes, facemasks, plasticbottles = 0;
     int[] values = new int[4];
@@ -31,13 +31,9 @@ public class GalleriFragment extends Fragment implements DataTransfer {
         values[2] = facemasks;
         values[3] = plasticbottles;
 
-        GridView gridview = (GridView) frag.findViewById(R.id.medal_grid);
-        gridview.setAdapter(new MedalAdapter(this.getContext(), this));
+        GridView gridview = frag.findViewById(R.id.medal_grid);
+        gridview.setAdapter(new MedalAdapter(this.getContext(), values));
         return frag;
-    }
-
-    public int[] SendData() {
-        return values;
     }
 
     public void getCurrentMonsters(MainActivity activity) {
@@ -53,8 +49,4 @@ public class GalleriFragment extends Fragment implements DataTransfer {
 
 
     }
-}
-
-interface DataTransfer {
-    int[] SendData();
 }
