@@ -54,7 +54,6 @@ public class FangMonstreFragment extends Fragment {
     private GraphicOverlay overlay;
     private TextView trash_text;
     private ImageView gloves;
-
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container,
@@ -67,15 +66,7 @@ public class FangMonstreFragment extends Fragment {
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-/*
-        view.findViewById(R.id.button_back).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                NavHostFragment.findNavController(FangMonstreFragment.this)
-                        .navigate(R.id.action_FangMonstreFragment_to_StartFragment);
-            }
-        });
-*/
+
         view.findViewById(R.id.button_capture).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -167,17 +158,43 @@ public class FangMonstreFragment extends Fragment {
                     public void onSuccess(List<ImageLabel> imageLabels) {
                         //Items recognized
                         if (imageLabels.size() == 0) {
-                            trash_text.setText("Det ved jeg ikke hvad er."); //TODO: bedre tekst?
+                            trash_text.setText("Dette monster kan ikke genkendes.");
                         }
+                        String monstertype = "";
+                        String years = "";
+                        String trashtype = "";
                         for (ImageLabel l : imageLabels) {
-                            trash_text.setText(l.getText() + " : " + l.getConfidence());
+                            switch (l.getText().trim()) {
+                                case "plasticbottle":
+                                    monstertype = "flaskemonster";
+                                    years = "450";
+                                    trashtype = "plastik";
+                                    break;
+                                case "facemask":
+                                    monstertype = "maskemonster";
+                                    years = "450";
+                                    trashtype = "restaffald";
+                                    break;
+                                case "cigarette":
+                                    monstertype =  "cigaretmonster";
+                                    years = "10";
+                                    trashtype = "restaffald";
+                                    break;
+                                case "can":
+                                    monstertype = "dåsemonster";
+                                    years = "80-200";
+                                    trashtype = "metal";
+                                    break;
+                            }
+                            ((MainActivity) getActivity()).incrementValue(l.getText().trim());
+                            trash_text.setText("Godt klaret! Hvis du ikke havde fundet dette " + monstertype + ", havde det taget " + years + " år om at nedbryde i naturen. Husk at samle det op og sortere det som " + trashtype);
                         }
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         //Items not recognized
-                        trash_text.setText("Det ved jeg ikke hvad er.");
+                        trash_text.setText("Dette monster kan ikke genkendes.");
                     }
                 });
 

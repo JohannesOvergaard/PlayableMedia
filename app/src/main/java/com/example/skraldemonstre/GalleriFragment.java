@@ -1,6 +1,8 @@
 package com.example.skraldemonstre;
 
+import android.app.Activity;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +12,10 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
-public class GalleriFragment extends Fragment {
+public class GalleriFragment extends Fragment implements DataTransfer {
+
+    private int cans, cigarettes, facemasks, plasticbottles = 0;
+    int[] values = new int[4];
 
     @Override
     public View onCreateView(
@@ -19,22 +24,37 @@ public class GalleriFragment extends Fragment {
     ) {
         View frag = inflater.inflate(R.layout.fragment_galleri, container, false);
 
+        MainActivity activity = (MainActivity) getActivity();
+        getCurrentMonsters(activity);
+        values[0] = cans;
+        values[1] = cigarettes;
+        values[2] = facemasks;
+        values[3] = plasticbottles;
+
         GridView gridview = (GridView) frag.findViewById(R.id.medal_grid);
-        gridview.setAdapter(new MedalAdapter(this.getContext()));
+        gridview.setAdapter(new MedalAdapter(this.getContext(), this));
         return frag;
+    }
+
+    public int[] SendData() {
+        return values;
+    }
+
+    public void getCurrentMonsters(MainActivity activity) {
+        this.cans = activity.getCans();
+        this.cigarettes = activity.getCigarettes();
+        this.facemasks = activity.getFacemasks();
+        this.plasticbottles = activity.getPlasticbottles();
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-/*
-        view.findViewById(R.id.button_galleri_back).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                NavHostFragment.findNavController(GalleriFragment.this)
-                        .navigate(R.id.action_GalleriFragment_to_StartFragment);
-            }
-        });
-*/
+
+
 
     }
+}
+
+interface DataTransfer {
+    int[] SendData();
 }

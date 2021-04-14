@@ -1,6 +1,7 @@
 package com.example.skraldemonstre;
 import android.content.Context;
 import android.graphics.Color;
+import android.provider.ContactsContract;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
@@ -14,11 +15,21 @@ import android.widget.Toast;
 public class MedalAdapter extends BaseAdapter
 {
     private final Context mContext;
-    private int btn_id;
     private final int total_btns = 4;
+    int[] monstervalues;
+    DataTransfer df;
+    int bronze = 1;
+    int silver = 3;
+    int gold = 5;
 
-    public MedalAdapter(Context context) {
+    public MedalAdapter(Context context, DataTransfer df) {
         this.mContext = context;
+        this.df = df;
+        findMonsters();
+    }
+
+    public void findMonsters() {
+        monstervalues = df.SendData();
     }
 
     @Override
@@ -36,29 +47,29 @@ public class MedalAdapter extends BaseAdapter
         return 0;
     }
 
+    public int getMonsterCount(int monstertype) {
+        int j = 0;
+        int earned = monstervalues[monstertype];
+        if (earned >= gold) {j = 3; }
+        else if (earned >= silver) {j = 2;}
+        else if (earned >= bronze) {j = 1; }
+        else {j = 0;}
+        switch (monstertype) {
+            case 0:
+                return canMonsterMedals[j];
+            case 1:
+                return cigaretteMonsterMedals[j];
+            case 2:
+                return facemaskMonsterMedals[j];
+            case 3:
+                return bottleMonsterMedals[j];
+        }
+        return 0;
+    }
+
     @Override
     public View getView(final int i, View view, ViewGroup viewGroup)
     {
-        /*Button btn;
-
-        if (view == null) {
-            btn = new Button(mContext);
-            btn.setText("Button " + (++btn_id));
-        } else {
-            btn = (Button) view;
-        }
-
-        btn.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                Toast.makeText(v.getContext(), "Button #" + (i + 1), Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        return btn;*/
-
         ImageButton imageButton;
         if (view == null) {
             imageButton = new ImageButton(mContext);
@@ -70,21 +81,54 @@ public class MedalAdapter extends BaseAdapter
             imageButton = (ImageButton) view;
         }
 
-        imageButton.setImageResource(mMedalIds[i]);
+        imageButton.setImageResource(getMonsterCount(i));
 
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(v.getContext(), "Button #" + (i+1), Toast.LENGTH_SHORT).show();
+                Toast.makeText(v.getContext(), "Du har fanget " + monstervalues[i] + " " + monsterTypes[i], Toast.LENGTH_SHORT).show();
             }
         });
         return imageButton;
     }
 
-    public Integer[] mMedalIds = {
+
+
+    public Integer[] bottleMonsterMedals = {
             R.drawable.greybottlemonster,
-            R.drawable.greycanmonster,
-            R.drawable.greycigarettemonster,
-            R.drawable.greymaskmonster
+            R.drawable.bronzebottlemonster,
+            R.drawable.silverbottlemonster,
+            R.drawable.goldbottlemonster,
     };
+
+    public Integer[] canMonsterMedals = {
+            R.drawable.greycanmonster,
+            R.drawable.bronzecanmonster,
+            R.drawable.silvercanmonster,
+            R.drawable.goldcanmonster
+    };
+
+    public Integer[] cigaretteMonsterMedals = {
+            R.drawable.greycigarettemonster,
+            R.drawable.bronzecigarettemonster,
+            R.drawable.silvercigarettemonster,
+            R.drawable.goldcigarettemonster
+    };
+
+    public Integer[] facemaskMonsterMedals = {
+            R.drawable.greymaskmonster,
+            R.drawable.bronzemaskmonster,
+            R.drawable.silvermaskmonster,
+            R.drawable.goldmaskmonster
+    };
+
+    public String[] monsterTypes = {
+        "dåsemonstre",
+        "cigaretmonstre",
+        "maskemonstre",
+        "flaskemonstre"
+    };
+
+
 }
+

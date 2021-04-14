@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.SkraldeMonstre" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.SkraldeMonstre" parent="Theme.MaterialComponents.Light">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/green</item>
         <item name="colorPrimaryVariant">@color/orange</item>
@@ -19,7 +19,7 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="Theme.SkraldeMonstre.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="Theme.SkraldeMonstre.AppBarOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="Theme.SkraldeMonstre.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>
